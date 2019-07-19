@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 19/07/2019 12:49:58 AM by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="entidades.Tiporeserva" table="tiporeserva" catalog="mascota" optimistic-lock="version">
+        <id name="idTipoReserva" type="int">
+            <column name="idTipoReserva" />
+            <generator class="assigned" />
+        </id>
+        <property name="descripcion" type="string">
+            <column name="descripcion" length="45" not-null="true" />
+        </property>
+        <set name="reservacitas" table="reservacita" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="idTipoReserva" not-null="true" />
+            </key>
+            <one-to-many class="entidades.Reservacita" />
+        </set>
+    </class>
+</hibernate-mapping>

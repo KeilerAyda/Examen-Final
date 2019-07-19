@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+         <ui:composition template="./TemplateVeterinaria.xhtml">
+
+
+            <ui:define name="content">
+                 <p:growl id="msj" autoUpdate="true"/>
+                <h:form id="from">
+                    <p:panel>
+                        <f:facet name="header">
+                            <column>
+                                <p:outputLabel value="MANTENIMIENTO TIPO DE RESERVA"/>  
+                            </column>
+                        </f:facet>
+                        <h:panelGrid columns="2">
+
+                            <p:outputLabel value="Codigo"/>
+                            <p:inputText value="#{tipoReservaBeans.tiporeserva.idTipoReserva}" required="true"/>
+                            <p:outputLabel value="Descripcion"/>
+                            <p:inputText value="#{tipoReservaBeans.tiporeserva.descripcion}"/>
+                        </h:panelGrid>
+                        <p:commandButton value="Guardar" action="#{tipoReservaBeans.guardarTipoReserva()}" update=":data:datatable,:from"/>
+                        <p:commandButton value="Actualizar" action="#{tipoReservaBeans.actualizarTipoReserva()}" update=":data:datatable,:from"/>
+                    </p:panel>
+                </h:form>
+                <p:panel>
+                    <h:form id="data">
+                        <p:dataTable rowKey="#{tiporeserva.idTipoReserva}" selection="#{tipoReservaBeans.tiporeserva}" selectionMode="single"
+                                     id="datatable" var="tiporeserva" value="#{tipoReservaBeans.listarTipoReserva()}">
+                            <p:ajax update=":from" event="rowSelect" />
+                            <p:column headerText="Tiporeserva">
+                                <h:outputText value="#{tiporeserva.idTipoReserva}"/>
+                            </p:column>
+                            <p:column headerText="descripcion">
+                                <h:outputText value="#{tiporeserva.descripcion}"/>
+                            </p:column>
+                            <p:column headerText="Accion">
+                                <p:commandButton value="Eliminar" onclick="PF('dgEliminar').show();">
+                                    <f:setPropertyActionListener target="#{tipoReservaBeans.tiporeserva}" value="#{tiporeserva}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                        
+                    </h:form>
+                </p:panel>
+                <p:dialog id="dig" header="Eliminar registro" widgetVar="dgEliminar" showEffect="explode" hideEffect="explode" modal="true">
+                    <h:form id="fromEliminar" style="text-align:center;">
+                        <p:commandButton value="Si" action="#{tipoReservaBeans.eliminarTipoReserva()}" update=":data:datatable" oncomplete="PF('dgEliminar').hide();"/>
+                        <p:commandButton value="No" onclick="PF('dgEliminar').hide();" />
+                    </h:form>
+                </p:dialog>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+
